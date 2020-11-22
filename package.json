@@ -20,7 +20,7 @@
   "scripts": {
     "build": "rm -rf build/ && tsc --declaration && cp src/updateTypescriptFunction.sh build/",
     "semantic-release": "semantic-release",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
