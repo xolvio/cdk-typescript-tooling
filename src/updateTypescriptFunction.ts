@@ -1,12 +1,25 @@
 import * as shelljs from "shelljs";
+import * as AWS from "aws-sdk";
 import { SynthUtils } from "@aws-cdk/assert";
 import type { Stack } from "@aws-cdk/core";
 import { compileCode } from "./typescriptFunction";
 
-module.exports = (functionPhysicalId: string, stack: Stack) => {
-  const functionLogicalId = functionPhysicalId.split("-")[1];
+module.exports = async (functionLogicalId: string, stack: Stack) => {
   let info: { entryFullPath: string; functionName: string };
-  Object.entries(SynthUtils.synthesize(stack).template.Outputs)
+  const synthesized = SynthUtils.synthesize(stack);
+  const { stackName } = synthesized;
+
+  const cloudformation = new AWS.CloudFormation();
+  const stackResources = await cloudformation
+    .describeStackResources({ StackName: stackName })
+    .promise();
+  const resource = stackResources?.StackResources?.find(
+    (r) => r.LogicalResourceId === functionLogicalId
+  );
+  if (!resource) {
+    throw new Error("not found");
+  }
+  Object.entries(synthesized.template.Outputs)
     .filter(([outputId]) => {
       return outputId.indexOf("UploadInfoExtended") > -1;
     })
@@ -15,7 +28,7 @@ module.exports = (functionPhysicalId: string, stack: Stack) => {
       const compiledInfoStringified = `${otherInfo[0]}${otherInfo[1].Ref}${otherInfo[2]}`;
       const compiledInfo = JSON.parse(compiledInfoStringified);
 
-      if (compiledInfo.functionName === functionLogicalId) {
+      if (compiledInfo.functionName === resource?.LogicalResourceId) {
         info = compiledInfo;
         return compiledInfo;
       }
@@ -35,7 +48,7 @@ module.exports = (functionPhysicalId: string, stack: Stack) => {
     const zipCommand = `zip function.zip main.js`;
     shelljs.exec(zipCommand, { cwd: outputDir });
 
-    const updateCommand = `aws lambda update-function-code --function-name ${functionPhysicalId} --zip-file fileb://${zippedFunctionPath}`;
+    const updateCommand = `aws lambda update-function-code --function-name ${resource.PhysicalResourceId} --zip-file fileb://${zippedFunctionPath}`;
     shelljs.exec(updateCommand);
   }
 };

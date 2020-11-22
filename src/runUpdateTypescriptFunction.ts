@@ -7,9 +7,9 @@ process.env.NODE_ENV = "test";
 const [stackPath, functionPhysicalId] = process.argv.slice(2);
 
 Promise.resolve(require(path.resolve(process.cwd(), stackPath)).default).then(
-  (newStack) => {
+  async (newStack) => {
     // I'm using require here because I need to be able to setup the NODE_ENV before the uploadNewCode is loaded.
-    require("./updateTypescriptFunction")(functionPhysicalId, newStack);
+    await require("./updateTypescriptFunction")(functionPhysicalId, newStack);
 
     console.log(
       "\n\n\nIf you want to look at the logs of this lambda function run:"

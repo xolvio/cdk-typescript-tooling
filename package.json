@@ -58,6 +58,7 @@
   "peerDependencies": {
     "@aws-cdk/assert": "*",
     "@aws-cdk/aws-lambda": "*",
-    "@aws-cdk/core": "*"
+    "@aws-cdk/core": "*",
+    "aws-sdk": "*"
   }
 }
