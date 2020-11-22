@@ -309,7 +309,7 @@ export class TypescriptFunction extends lambda.Function {
     new CfnOutput(scope, `${id}UploadInfoExtended`, {
       value: JSON.stringify({ entryFullPath, functionName: this.functionName }),
       condition: new CfnCondition(scope, `${id}testEnvCondition`, {
-        expression: Fn.conditionEquals(process.env.NODE_ENV, "test"),
+        expression: Fn.conditionEquals(process.env.NODE_ENV || "", "test"),
       }),
     });
 
