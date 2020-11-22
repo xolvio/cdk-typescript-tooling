@@ -15,7 +15,7 @@
   "author": "Lukasz Gandecki <lukasz@xolv.io>",
   "main": "build/typescriptFunction.js",
   "bin": {
-    "update-typescript-function": "build/updateTypescriptFunction.sh"
+    "update-typescript-function": "build/update-typescript-function.js"
   },
   "scripts": {
     "build": "rm -rf build/ && tsc --declaration && cp src/updateTypescriptFunction.sh build/",
