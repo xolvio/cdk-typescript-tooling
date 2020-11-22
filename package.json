@@ -18,7 +18,7 @@
     "update-typescript-function": "build/update-typescript-function.js"
   },
   "scripts": {
-    "build": "rm -rf build/ && tsc --declaration && cp src/updateTypescriptFunction.sh build/",
+    "build": "rm -rf build/ && tsc --declaration",
     "semantic-release": "semantic-release",
     "test": "jest --passWithNoTests",
     "type-check": "tsc --noEmit"
