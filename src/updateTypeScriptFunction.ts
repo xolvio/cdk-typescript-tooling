@@ -5,7 +5,7 @@ import fs from "fs";
 import { SynthUtils } from "@aws-cdk/assert";
 import { exec, execSync } from "child_process";
 import { StackResourceSummaries } from "aws-sdk/clients/cloudformation";
-import { compileCode } from "./typescriptFunction";
+import { compileCode } from "./typeScriptFunction";
 
 const getCompiledInfo = (output: any) => {
   const otherInfo = output.Value["Fn::Join"][1];

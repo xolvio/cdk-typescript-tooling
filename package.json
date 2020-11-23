@@ -13,7 +13,7 @@
   },
   "license": "ISC",
   "author": "Lukasz Gandecki <lukasz@xolv.io>",
-  "main": "build/typescriptFunction.js",
+  "main": "build/typeScriptFunction.js",
   "bin": {
     "update-typescript-function": "build/update-typescript-function.js"
   },

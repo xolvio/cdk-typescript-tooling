@@ -272,7 +272,7 @@ export interface NodejsFunctionProps extends lambda.FunctionOptions {
 /**
  * A Node.js Lambda function bundled using Parcel
  */
-export class TypescriptFunction extends lambda.Function {
+export class TypeScriptFunction extends lambda.Function {
   constructor(
     scope: cdk.Construct,
     id: string,
