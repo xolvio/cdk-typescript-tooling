@@ -8,14 +8,17 @@ import * as lambda from "@aws-cdk/aws-lambda";
 import * as cdk from "@aws-cdk/core";
 import * as shelljs from "shelljs";
 import { CfnCondition, CfnOutput, Fn } from "@aws-cdk/core";
+import { exec } from "child_process";
 
 export const compileCode = ({
   modulesToIgnore = [],
   entryFullPath,
+  async,
 }: {
   modulesToIgnore?: string[];
   entryFullPath: string;
-}) => {
+  async?: boolean;
+}): { outputDir: string } | Promise<{ outputDir: string }> => {
   const outputDir = fs.mkdtempSync(
     path.join(os.tmpdir(), "aws-lambda-nodejs-webpack")
   );
@@ -38,10 +41,26 @@ export const compileCode = ({
   //   cwd: process.cwd(),
   //   stdio: 'inherit',
   // })
+  const webpackCommand = `node ${webpackBinPath} --config ${webpackConfigPath}`;
+  const webpackExecOptions = {
+    cwd: process.cwd(),
+  };
   if (process.env.NODE_ENV !== "test") {
-    shelljs.exec(`node ${webpackBinPath} --config ${webpackConfigPath}`, {
-      cwd: process.cwd(),
-    });
+    if (async) {
+      return new Promise((resolve) => {
+        exec(webpackCommand, webpackExecOptions, (error) => {
+          if (error) {
+            console.error(
+              "Webpack compilation error for",
+              entryFullPath,
+              error
+            );
+          }
+          resolve({ outputDir });
+        });
+      });
+    }
+    shelljs.exec(webpackCommand, webpackExecOptions);
   }
 
   // console.log('webpackOutput.stdout', webpackOutput.stdout)
@@ -278,7 +297,7 @@ export class TypescriptFunction extends lambda.Function {
     const { outputDir } = compileCode({
       modulesToIgnore: props.modulesToIgnore,
       entryFullPath,
-    });
+    }) as { outputDir: string };
 
     // this is incorrectly typed in shelljs, the array returns an object
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
