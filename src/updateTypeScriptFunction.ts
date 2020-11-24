@@ -113,7 +113,9 @@ const getStackResourcesAndUploadInfos = async (
 
 module.exports = async (functionLogicalId: string, stackPath: string) => {
   if (!process.env.BRANCH) {
-    process.env.BRANCH = execSync("git branch --show-current").toString();
+    process.env.BRANCH = execSync("git branch --show-current")
+      .toString()
+      .trim();
   }
   if (
     process.env.BRANCH === "master" &&

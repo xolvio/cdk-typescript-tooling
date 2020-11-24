@@ -1,3 +1,4 @@
+/* eslint-disable no-new */
 import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
@@ -6,8 +7,11 @@ import * as findUp from "find-up";
 
 import * as lambda from "@aws-cdk/aws-lambda";
 import * as cdk from "@aws-cdk/core";
-import * as shelljs from "shelljs";
+import { FilterPattern, SubscriptionFilter } from "@aws-cdk/aws-logs";
 import { CfnCondition, CfnOutput, Fn } from "@aws-cdk/core";
+import * as LogsDestinations from "@aws-cdk/aws-logs-destinations";
+
+import * as shelljs from "shelljs";
 import { exec } from "child_process";
 
 export const compileCode = ({
@@ -267,6 +271,8 @@ export interface NodejsFunctionProps extends lambda.FunctionOptions {
    * @default true
    */
   readonly awsSdkConnectionReuse?: boolean;
+
+  readonly logFunction?: lambda.Function;
 }
 
 /**
@@ -324,13 +330,20 @@ export class TypeScriptFunction extends lambda.Function {
       handler: `main.${handler}`,
     });
 
-    // eslint-disable-next-line no-new
     new CfnOutput(scope, `${id}UploadInfoExtended`, {
       value: JSON.stringify({ entryFullPath, functionName: this.functionName }),
       condition: new CfnCondition(scope, `${id}testEnvCondition`, {
         expression: Fn.conditionEquals(process.env.NODE_ENV || "", "test"),
       }),
     });
+
+    if (props.logFunction) {
+      new SubscriptionFilter(scope, `${id}Subscription`, {
+        logGroup: this.logGroup,
+        filterPattern: FilterPattern.anyTerm("ERROR"),
+        destination: new LogsDestinations.LambdaDestination(props.logFunction),
+      });
+    }
 
     //
     // Enable connection reuse for aws-sdk
