@@ -89,10 +89,10 @@ export default (async () => {
 
 ####  Updating single function:
 The compilation and uploading of functions happen in parallel. Because of that it is crazy fast (<10 s for ~20 functions) and in most cases that is what you should be doing. It comes with the advantage that if you change a code that's used by a few different functions, all of them will be redeployed. Sometimes you might not realize that some piece of code is used in multiple places and get yourself in some weird inconsistent state.
-But if you must, or if you have hundreds of functions in the stack, it's simple, get the physicalId of a function (using aws cli or going to the stack using their cloudformation panel), and do:
+But if you must, or if you have hundreds of functions in the stack, it's simple, get the Logical ID of a function (using aws cli or going to the stack using their cloudformation panel), and do:
 
 ```
-npx update-typescript-function ./src/cdk.ts SalesSystemExample-PurchaseEndpoint321B1702-IKYULFRNR9VJ
+npx update-typescript-function ./src/cdk.ts PurchaseEndpointIKYULFRNR9VJ
 ```
 
 Enjoy!
