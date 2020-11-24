@@ -121,14 +121,14 @@ export const generateWebpackConfig = ({
       },
       optimization: {
         nodeEnv: 'production',
-        minimize: false,
+        minimize: true,
         minimizer: [
           new TerserPlugin({
             terserOptions: {
               ecma: undefined,
               parse: {},
               compress: {},
-              mangle: true, // Note \`mangle.properties\` is \`false\` by default.
+              mangle: false,
               module: false,
               output: null,
               toplevel: false,
@@ -141,7 +141,7 @@ export const generateWebpackConfig = ({
           }),
         ],
       },
-      // devtool: "source-map",
+      devtool: "source-map",
       module: {
         rules: [
       {
