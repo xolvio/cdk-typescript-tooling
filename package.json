@@ -24,6 +24,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@aws-cdk/assert": "1.64.1",
     "@types/shelljs": "0.8.8",
     "find-up": "5.0.0",
     "shelljs": "0.8.4",
