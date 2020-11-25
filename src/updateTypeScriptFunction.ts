@@ -23,7 +23,8 @@ const compileAndUpload = async (
   });
   return new Promise((resolve) => {
     const zippedFunctionPath = `${outputDir}/function.zip`;
-    const zipCommand = `zip function.zip *.js`;
+    fs.unlinkSync(`${outputDir}/webpack.config.js`);
+    const zipCommand = `zip function.zip *`;
     exec(zipCommand, { cwd: outputDir }, (error) => {
       if (error) {
         console.error("Zip Command Error: ", error);
