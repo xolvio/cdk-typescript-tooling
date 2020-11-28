@@ -10,6 +10,8 @@ import * as cdk from "@aws-cdk/core";
 import { FilterPattern, SubscriptionFilter } from "@aws-cdk/aws-logs";
 import { CfnCondition, CfnOutput, Fn } from "@aws-cdk/core";
 import * as LogsDestinations from "@aws-cdk/aws-logs-destinations";
+import * as apiGateway2 from "@aws-cdk/aws-apigatewayv2";
+import * as apiGateway2Integrations from "@aws-cdk/aws-apigatewayv2-integrations";
 
 import * as shelljs from "shelljs";
 import { exec } from "child_process";
@@ -273,16 +275,24 @@ export interface NodejsFunctionProps extends lambda.FunctionOptions {
   readonly awsSdkConnectionReuse?: boolean;
 
   readonly logFunction?: lambda.Function;
+
+  readonly withHttp?: boolean;
 }
 
 /**
  * A Node.js Lambda function bundled using Parcel
  */
 export class TypeScriptFunction extends lambda.Function {
+  private url?: string;
+
   constructor(
     scope: cdk.Construct,
     id: string,
-    props: NodejsFunctionProps = { entry: "", modulesToIgnore: [] }
+    props: NodejsFunctionProps = {
+      entry: "",
+      modulesToIgnore: [],
+      withHttp: false,
+    }
   ) {
     if (props.runtime && props.runtime.family !== lambda.RuntimeFamily.NODEJS) {
       throw new Error("Only `NODEJS` runtimes are supported.");
@@ -342,6 +352,20 @@ export class TypeScriptFunction extends lambda.Function {
         logGroup: this.logGroup,
         filterPattern: FilterPattern.anyTerm("ERROR"),
         destination: new LogsDestinations.LambdaDestination(props.logFunction),
+      });
+    }
+
+    if (props.withHttp) {
+      const api = new apiGateway2.HttpApi(scope, `${id}HttpApi`, {
+        defaultIntegration: new apiGateway2Integrations.LambdaProxyIntegration({
+          handler: this,
+        }),
+      });
+
+      this.url = api.url as string;
+
+      new CfnOutput(scope, `${id}Url`, {
+        value: this.url,
       });
     }
 

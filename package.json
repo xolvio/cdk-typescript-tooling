@@ -24,18 +24,23 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@aws-cdk/assert": "1.64.1",
+    "@aws-cdk/assert": "1.75.0",
     "@types/shelljs": "0.8.8",
     "find-up": "5.0.0",
     "shelljs": "0.8.4",
-    "ts-node": "9.0.0"
+    "ts-node": "9.0.0",
+    "tsconfig-paths-webpack-plugin": "^3.3.0",
+    "webpack": "^5.8.0",
+    "webpack-cli": "^4.2.0"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.64.1",
-    "@aws-cdk/aws-lambda": "1.64.1",
-    "@aws-cdk/aws-logs": "1.64.1",
-    "@aws-cdk/aws-logs-destinations": "1.64.1",
-    "@aws-cdk/core": "1.64.1",
+    "@aws-cdk/assert": "1.75.0",
+    "@aws-cdk/aws-apigatewayv2": "1.75.0",
+    "@aws-cdk/aws-apigatewayv2-integrations": "1.75.0",
+    "@aws-cdk/aws-lambda": "1.75.0",
+    "@aws-cdk/aws-logs": "1.75.0",
+    "@aws-cdk/aws-logs-destinations": "1.75.0",
+    "@aws-cdk/core": "1.75.0",
     "@commitlint/cli": "8.3.5",
     "@commitlint/config-conventional": "8.3.4",
     "@tsconfig/node10": "^1.0.7",
@@ -60,6 +65,8 @@
   },
   "peerDependencies": {
     "@aws-cdk/assert": "*",
+    "@aws-cdk/aws-apigatewayv2": "*",
+    "@aws-cdk/aws-apigatewayv2-integrations": "*",
     "@aws-cdk/aws-lambda": "*",
     "@aws-cdk/aws-logs": "*",
     "@aws-cdk/aws-logs-destinations": "*",
