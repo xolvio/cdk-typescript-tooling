@@ -71,6 +71,7 @@
     "@aws-cdk/aws-logs": "*",
     "@aws-cdk/aws-logs-destinations": "*",
     "@aws-cdk/core": "*",
-    "aws-sdk": "*"
+    "aws-sdk": "*",
+    "ts-loader": "*"
   }
 }
