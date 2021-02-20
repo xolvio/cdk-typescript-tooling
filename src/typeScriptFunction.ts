@@ -123,7 +123,7 @@ export const generateWebpackConfig = ({
         // we need to iterate over all packages and add the node_modules dynamically
         // modules: ["../../node_modules", ${nodeModulesList}],
         extensions: [ '.mjs', '.ts', '.js' ],
-        plugins: [new TsconfigPathsPlugin({configFile: '../../tsconfig.json'})],
+        plugins: [new TsconfigPathsPlugin({configFile: 'tsconfig.json'})],
       },
       optimization: {
         nodeEnv: 'production',
