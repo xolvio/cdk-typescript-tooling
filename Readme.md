@@ -125,7 +125,7 @@ export const handler: CloudWatchLogsHandler = async (event, context) => {
 };
 ```
 
-This is the simplest possible one that will just log errors in a CloudWatch stream aggregating all errors form all lambda functions.
+This is the simplest possible one that will just log errors in a CloudWatch stream aggregating all errors from all lambda functions.
 
 Now in your cdk define a TypeScriptFunction that will deploy that code. Assign its handle to a variable.
 
