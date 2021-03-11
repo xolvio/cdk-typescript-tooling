@@ -188,29 +188,24 @@ export const generateWebpackConfig = ({
 
 type PluginsPaths = { [key: string]: string };
 
-const createPluginsPaths = () => {
-  const webpackPath = require.resolve("webpack", { paths: [process.cwd()] });
-
-  const plugins = [
+const createPluginsPaths = () =>
+  [
     "webpack",
     "noop2",
     "tsconfig-paths-webpack-plugin",
     "terser-webpack-plugin",
-  ];
-  const pluginsPath = path.join(
-    webpackPath.slice(0, webpackPath.lastIndexOf("/node_modules")),
-    "node_modules"
-  );
-  return plugins.reduce(function (acc, pluginName) {
-    return {
-      [pluginName]: findUp.sync(pluginName, {
-        type: "directory",
-        cwd: pluginsPath,
-      }),
+  ].reduce(
+    (acc, pluginName) => ({
+      [pluginName]: path.dirname(
+        findUp.sync("package.json", {
+          cwd: path.dirname(require.resolve(pluginName)),
+        }) as string
+      ),
       ...acc,
-    };
-  }, {}) as PluginsPaths;
-};
+    }),
+    {}
+  ) as PluginsPaths;
+
 const getListOfNodeModules = () => {
   // TODO get the list from lerna.json instead
   return shelljs
