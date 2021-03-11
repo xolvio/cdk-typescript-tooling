@@ -79,7 +79,10 @@ const getStackResourcesAndUploadInfos = async (
   return new Promise((resolve) => {
     let cache;
     const cacheDirectory = `${process.cwd()}/.update-function-cache`;
-    const cacheFileName = `${process.env.BRANCH}.cache.json`;
+    const cacheFileName = `${process.env.BRANCH?.replace(
+      /\//g,
+      "_"
+    )}.cache.json`;
     const cacheFilePath = `${cacheDirectory}/${cacheFileName}`;
     try {
       // eslint-disable-next-line global-require,import/no-dynamic-require
