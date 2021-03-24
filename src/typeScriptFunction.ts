@@ -16,6 +16,8 @@ import * as apiGateway2Integrations from "@aws-cdk/aws-apigatewayv2-integrations
 import * as shelljs from "shelljs";
 import { exec } from "child_process";
 
+let functionsToRunAfter: (() => void)[] = [];
+
 export const compileCode = ({
   modulesToIgnore = [],
   entryFullPath,
@@ -224,6 +226,7 @@ const getListOfNodeModules = () => {
  * Properties for a NodejsFunction
  */
 export interface NodejsFunctionProps extends lambda.FunctionOptions {
+  addDependencies?: ((self: TypeScriptFunction) => void)[];
   /**
    * Path to the entry file (JavaScript or TypeScript), relative to your project root
    */
@@ -278,7 +281,7 @@ export interface NodejsFunctionProps extends lambda.FunctionOptions {
  * A Node.js Lambda function bundled using Parcel
  */
 export class TypeScriptFunction extends lambda.Function {
-  private url?: string;
+  public url?: string;
 
   constructor(
     scope: cdk.Construct,
@@ -370,6 +373,15 @@ export class TypeScriptFunction extends lambda.Function {
       this.addEnvironment("AWS_NODEJS_CONNECTION_REUSE_ENABLED", "1");
     }
 
+    if (props.addDependencies) {
+      functionsToRunAfter = [
+        ...functionsToRunAfter,
+        ...props.addDependencies.map((dependencyFunction) => () =>
+          dependencyFunction(this)
+        ),
+      ];
+    }
+
     this.addEnvironment("NODE_OPTIONS", "--enable-source-maps");
   }
 }
@@ -377,3 +389,7 @@ export class TypeScriptFunction extends lambda.Function {
 function nodeMajorVersion(): number {
   return parseInt(process.versions.node.split(".")[0], 10);
 }
+
+export const runAfter = () => {
+  functionsToRunAfter.forEach((f) => f());
+};

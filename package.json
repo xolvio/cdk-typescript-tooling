@@ -1,6 +1,6 @@
 {
   "name": "cdk-typescript-tooling",
-  "version": "0.0.0-development",
+  "version": "3.0.0-alpha",
   "description": "",
   "keywords": [],
   "homepage": "https://github.com/xolvio/cdk-typescript-tooling#readme",
@@ -37,6 +37,7 @@
     "@aws-cdk/assert": "1.75.0",
     "@aws-cdk/aws-apigatewayv2": "1.75.0",
     "@aws-cdk/aws-apigatewayv2-integrations": "1.75.0",
+    "@aws-cdk/aws-dynamodb": "1.75.0",
     "@aws-cdk/aws-lambda": "1.75.0",
     "@aws-cdk/aws-logs": "1.75.0",
     "@aws-cdk/aws-logs-destinations": "1.75.0",
