@@ -390,6 +390,6 @@ function nodeMajorVersion(): number {
   return parseInt(process.versions.node.split(".")[0], 10);
 }
 
-export const runAfter = () => {
+export const initializeToolkitDependencies = () => {
   functionsToRunAfter.forEach((f) => f());
 };
