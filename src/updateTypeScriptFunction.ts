@@ -20,10 +20,10 @@ const compileAndUpload = async (
   const { outputDir } = await compileCode({
     async: true,
     entryFullPath,
+    forceCompile: true,
   });
   return new Promise((resolve) => {
     const zippedFunctionPath = `${outputDir}/function.zip`;
-    fs.unlinkSync(`${outputDir}/webpack.config.js`);
     const zipCommand = `zip function.zip *`;
     exec(zipCommand, { cwd: outputDir }, (error) => {
       if (error) {

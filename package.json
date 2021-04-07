@@ -1,6 +1,6 @@
 {
-  "name": "cdk-typescript-tooling",
-  "version": "3.0.0-alpha.8",
+  "name": "0.0.0-development",
+  "version": "",
   "description": "",
   "keywords": [],
   "homepage": "https://github.com/xolvio/cdk-typescript-tooling#readme",
@@ -24,8 +24,9 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@aws-cdk/assert": "1.75.0",
+    "@aws-cdk/assert": "1.96.0",
     "@types/shelljs": "0.8.8",
+    "esbuild": "^0.11.5",
     "find-up": "5.0.0",
     "shelljs": "0.8.4",
     "ts-node": "9.0.0",
@@ -34,15 +35,14 @@
     "webpack-cli": "^4.2.0"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.75.0",
-    "@aws-cdk/aws-apigatewayv2": "1.75.0",
-    "@aws-cdk/aws-apigatewayv2-integrations": "1.75.0",
-    "@aws-cdk/aws-dynamodb": "1.75.0",
-    "@aws-cdk/aws-lambda": "1.75.0",
-    "@aws-cdk/aws-lambda-event-sources": "1.75.0",
-    "@aws-cdk/aws-logs": "1.75.0",
-    "@aws-cdk/aws-logs-destinations": "1.75.0",
-    "@aws-cdk/core": "1.75.0",
+    "@aws-cdk/aws-apigatewayv2": "1.96.0",
+    "@aws-cdk/aws-apigatewayv2-integrations": "1.96.0",
+    "@aws-cdk/aws-dynamodb": "1.96.0",
+    "@aws-cdk/aws-lambda": "1.96.0",
+    "@aws-cdk/aws-lambda-event-sources": "1.96.0",
+    "@aws-cdk/aws-logs": "1.96.0",
+    "@aws-cdk/aws-logs-destinations": "1.96.0",
+    "@aws-cdk/core": "1.96.0",
     "@commitlint/cli": "8.3.5",
     "@commitlint/config-conventional": "8.3.4",
     "@tsconfig/node10": "^1.0.7",
